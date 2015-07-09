@@ -19,6 +19,7 @@ private:
   G4int *evNr;
   TFile *fout;
   TH1D *htst;
+  TTree *data;
 };
 
 #endif
