@@ -22,6 +22,19 @@ mscSteppingAction::mscSteppingAction(G4int *evN)
 
   tout->Branch("prePosX",&pre_pos_x,"prePosX/D");
   tout->Branch("postPosX",&post_pos_x,"postPosX/D");
+  tout->Branch("prePosY", &pre_pos_y,"prePosY/D");
+  tout->Branch("postPosY", &post_pos_y,"postPosY/D");
+  tout->Branch("prePosZ", &pre_pos_z,"prePosZ/D");
+  tout->Branch("postPosZ", &post_pos_z,"prePosZ/D");  
+  tout->Branch("preMomX", &pre_mom_x, "preMomX/D");
+  tout->Branch("postMomX", &post_mom_x, "postMomX/D");
+  tout->Branch("preMomY", &pre_mom_y, "preMomY/D");
+  tout->Branch("postMomY", &post_mom_y, "postMomY/D");
+  tout->Branch("preMomZ", &pre_mom_z, "preMomZ/D");
+  tout->Branch("postMomZ", &post_mom_z, "postMomZ/D");
+  tout->Branch("trackID", &trackID, "trackID/C");
+  tout->Branch("parentID", &parentID, "parentID/C");
+  tout->Branch("particle_Type", &particle_Type, "particle_type/C");
   
 }
 
@@ -79,6 +92,19 @@ void mscSteppingAction::UserSteppingAction(const G4Step* theStep)
 
   pre_pos_x = thePrePoint->GetPosition().getX();
   post_pos_x = thePostPoint->GetPosition().getX();
+  pre_pos_y = thePrePoint->GetPosition().getY();
+  post_pos_y = thePostPoint->GetPosition().getY();
+  pre_pos_z = thePrePoint->GetPosition().getZ();
+  post_pos_z = thePostPoint->GetPosition().getZ();
+  pre_mom_x = thePrePoint->GetMomentum().getX();
+  post_mom_x = thePostPoint->GetMomentum().getX();
+  pre_mom_y = thePrePoint->GetMomentum().getY();
+  post_mom_y = thePostPoint->GetMomentum().getY();
+  pre_mom_z = thePrePoint->GetMomentum().getZ();
+  post_mom_z = thePostPoint->GetMomentum().getZ();
+  trackID = theTrack->GetTrackID();
+  parentID = theTrack->GetParentID();
+  particle_Type = particleType->GetPDGEncoding();
 
   tout->Fill();
 
