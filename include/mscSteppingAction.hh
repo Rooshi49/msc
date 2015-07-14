@@ -33,9 +33,9 @@ private:
   G4double post_mom_y;
   G4double pre_mom_z;
   G4double post_mom_z;
-  G4String trackID;
-  G4String parentID;
-  G4String particle_Type;
+  G4int trackID;
+  G4int parentID;
+  G4int particle_Type;
 
 };
 

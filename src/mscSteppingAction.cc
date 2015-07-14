@@ -32,9 +32,9 @@ mscSteppingAction::mscSteppingAction(G4int *evN)
   tout->Branch("postMomY", &post_mom_y, "postMomY/D");
   tout->Branch("preMomZ", &pre_mom_z, "preMomZ/D");
   tout->Branch("postMomZ", &post_mom_z, "postMomZ/D");
-  tout->Branch("trackID", &trackID, "trackID/C");
-  tout->Branch("parentID", &parentID, "parentID/C");
-  tout->Branch("particle_Type", &particle_Type, "particle_type/C");
+  tout->Branch("trackID", &trackID, "trackID/i");
+  tout->Branch("parentID", &parentID, "parentID/i");
+  tout->Branch("particle_Type", &particle_Type, "particle_type/i");
   
 }
 
