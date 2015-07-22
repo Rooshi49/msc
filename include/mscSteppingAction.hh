@@ -36,6 +36,9 @@ private:
   G4int trackID;
   G4int parentID;
   G4int particle_Type;
+  G4int Event_Number;
+  G4int Material_Number;
+  G4 Physical_Volume;
 
 };
 

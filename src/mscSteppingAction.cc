@@ -8,10 +8,11 @@
 #include "G4VPhysicalVolume.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4ParticleTypes.hh"
+#include "G4String.hh"
 
 
 
-mscSteppingAction::mscSteppingAction(G4int *evN)		
+mscSteppingAction::mscSteppingAction(G4int *evN)		 
 {
   //eventID pointer from the mscEventAction.cc file
   evNr=evN;
@@ -35,6 +36,8 @@ mscSteppingAction::mscSteppingAction(G4int *evN)
   tout->Branch("trackID", &trackID, "trackID/i");
   tout->Branch("parentID", &parentID, "parentID/i");
   tout->Branch("particle_Type", &particle_Type, "particle_type/i");
+  tout->Branch("Event_Number", &Event_Number, "Event_Number/i");  
+  tout->Branch("Material_Number", &Material_Number, "Material_Number/i");
   
 }
 
@@ -51,23 +54,20 @@ mscSteppingAction::~mscSteppingAction()
 void mscSteppingAction::UserSteppingAction(const G4Step* theStep)
 {
 
-
   G4Track*              theTrack     = theStep->GetTrack();
   G4ParticleDefinition* particleType = theTrack->GetDefinition();
   G4StepPoint*          thePrePoint  = theStep->GetPreStepPoint();
   G4StepPoint*          thePostPoint = theStep->GetPostStepPoint();
-  //G4VPhysicalVolume*    thePostPV    = thePostPoint->GetPhysicalVolume();
+  G4VPhysicalVolume*    thePostPV    = thePostPoint->GetPhysicalVolume();
   G4String              particleName = theTrack->GetDefinition()->GetParticleName();
   
   //get material
   G4Material* theMaterial = theTrack->GetMaterial();
 
-
-
-  if(theMaterial){
+  /* if(theMaterial){
     if(theMaterial->GetName().compare("detectorMat")==0){
       G4cout<<" In  detector " << *evNr<<" "
-	    <<theTrack->GetTrackID()<<" "<< theTrack->GetParentID()<< " "
+            <<theTrack->GetTrackID()<<" "<< theTrack->GetParentID()<< " " << theTrack->GetCurrentStepNumber()<< " "
 	    <<thePrePoint->GetPosition().getX()<<" "
 	    <<thePrePoint->GetMomentum().getX()<<" "
 	    <<thePostPoint->GetPosition().getY()<<" "
@@ -77,7 +77,7 @@ void mscSteppingAction::UserSteppingAction(const G4Step* theStep)
     }
     if(theMaterial->GetName().compare("PBA")==0){
       G4cout<<" In  radiator " << *evNr<<" "
-	    <<theTrack->GetTrackID()<<" "<< theTrack->GetParentID()<< " "
+            <<theTrack->GetTrackID()<<" "<< theTrack->GetParentID()<< " " << theTrack->GetCurrentStepNumber()<< " "
 	    <<thePrePoint->GetPosition().getX()<<" "
 	    <<thePrePoint->GetMomentum().getX()<<" "
 	    <<thePostPoint->GetPosition().getY()<<" "
@@ -85,10 +85,10 @@ void mscSteppingAction::UserSteppingAction(const G4Step* theStep)
 	    <<thePrePoint->GetTotalEnergy()<<" "
 	    <<particleType->GetPDGEncoding()<<G4endl;   
     }
-  }
+    } */
 
   
-  /*fill tree*/ 
+  /*fill tree*/   
 
   pre_pos_x = thePrePoint->GetPosition().getX();
   post_pos_x = thePostPoint->GetPosition().getX();
@@ -105,8 +105,22 @@ void mscSteppingAction::UserSteppingAction(const G4Step* theStep)
   trackID = theTrack->GetTrackID();
   parentID = theTrack->GetParentID();
   particle_Type = particleType->GetPDGEncoding();
+  Event_Number = *evNr;
+  Physical_Volume = *thePostPoint->GetPhysicalVolume();
+
+  Material_Number=9999;
+  if(theMaterial){
+    if(theMaterial->GetName().compare("detectorMat")==0){
+      Material_Number = 1;
+    }
+    Material_Number=1000;
+    if(theMaterial->GetName().compare("PBA")==0){
+      Material_Number = 2;
+    }
+  }
 
   tout->Fill();
+
 
 }
 
